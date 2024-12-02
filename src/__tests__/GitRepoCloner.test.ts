@@ -43,6 +43,24 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         })
     }
 
+    @test()
+    protected static async changesCurrentDirectoryToDirPath() {
+        const dirPath = 'src'
+
+        await this.instance.run({
+            urls: [],
+            dirPath,
+        })
+
+        const actual = process.cwd().split('/').pop()
+
+        assert.isEqual(
+            actual,
+            dirPath,
+            'Should change current directory to the dirPath!'
+        )
+    }
+
     private static readonly dirPath = generateId()
 
     private static GitRepoCleaner() {

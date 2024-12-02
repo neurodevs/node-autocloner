@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { chdir } from 'process'
 import { assertOptions } from '@sprucelabs/schema'
 import SpruceError from '../errors/SpruceError'
 
@@ -18,6 +19,8 @@ export default class GitRepoCloner implements RepoCloner {
         this.dirPath = dirPath
 
         this.throwIfDirPathDoesNotExist()
+
+        chdir(this.dirPath)
     }
 
     private throwIfDirPathDoesNotExist() {
