@@ -18,6 +18,7 @@ export default class GitRepoCloner implements RepoCloner {
     private urls!: string[]
     private dirPath!: string
     private currentUrl!: string
+    private currentError!: any
     private log = buildLog('GitRepoCloner')
 
     protected constructor() {}
@@ -37,7 +38,7 @@ export default class GitRepoCloner implements RepoCloner {
     }
 
     private throwIfDirPathDoesNotExist() {
-        if (!this.existsSync(this.dirPath)) {
+        if (!this.dirPathExists) {
             throw new SpruceError({
                 code: 'DIR_PATH_DOES_NOT_EXIST',
                 dirPath: this.dirPath,
@@ -52,28 +53,49 @@ export default class GitRepoCloner implements RepoCloner {
     private cloneReposFromUrls() {
         this.urls.forEach((url) => {
             this.currentUrl = url
-            this.cloneRepo()
+            this.cloneCurrentUrl()
         })
     }
 
-    private cloneRepo() {
-        if (!this.existsSync(this.currentRepoName)) {
-            try {
-                this.execSync(`git clone ${this.currentUrl}`)
-            } catch (err: any) {
-                throw new SpruceError({
-                    code: 'GIT_CLONE_FAILED',
-                    url: this.currentUrl,
-                    originalError: err.message,
-                })
-            }
+    private cloneCurrentUrl() {
+        if (!this.currentRepoExists) {
+            this.tryToCloneRepo()
         } else {
             this.log.info(this.repoExistsMessage)
         }
     }
 
+    private tryToCloneRepo() {
+        try {
+            this.execSync(`git clone ${this.currentUrl}`)
+        } catch (err: any) {
+            this.currentError = err
+            this.throwGitCloneFailed()
+        }
+    }
+
+    private throwGitCloneFailed() {
+        throw new SpruceError({
+            code: 'GIT_CLONE_FAILED',
+            url: this.currentUrl,
+            originalError: this.currentError.message,
+        })
+    }
+
+    private get dirPathExists() {
+        return this.existsSync(this.dirPath)
+    }
+
     private get currentRepoName() {
         return this.currentUrl.match(this.regex)![1]
+    }
+
+    private get currentRepoExists() {
+        return this.existsSync(this.currentRepoName)
+    }
+
+    private get repoExistsMessage() {
+        return `Repo already exists, skipping: ${this.currentRepoName}!`
     }
 
     private get existsSync() {
@@ -82,9 +104,6 @@ export default class GitRepoCloner implements RepoCloner {
 
     private get execSync() {
         return GitRepoCloner.execSync
-    }
-    private get repoExistsMessage() {
-        return `Repo already exists, skipping: ${this.currentRepoName}!`
     }
 
     private readonly regex = /\/([a-zA-Z0-9_.-]+)\.git/
