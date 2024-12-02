@@ -10,6 +10,11 @@ export default class SpruceError extends BaseSpruceError<ErrorOptions> {
             case 'DIR_PATH_DOES_NOT_EXIST':
                 message = `dirPath does not exist: ${options?.dirPath}!`
                 break
+
+            case 'GIT_CLONE_FAILED':
+                message = `Git clone failed for repo: ${options?.url}!`
+                break
+
             default:
                 message = super.friendlyMessage()
         }

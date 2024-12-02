@@ -58,7 +58,15 @@ export default class GitRepoCloner implements RepoCloner {
 
     private cloneRepo() {
         if (!this.existsSync(this.currentRepoName)) {
-            this.execSync(`git clone ${this.currentUrl}`)
+            try {
+                this.execSync(`git clone ${this.currentUrl}`)
+            } catch (err: any) {
+                throw new SpruceError({
+                    code: 'GIT_CLONE_FAILED',
+                    url: this.currentUrl,
+                    originalError: err.message,
+                })
+            }
         } else {
             this.log.info(this.repoExistsMessage)
         }

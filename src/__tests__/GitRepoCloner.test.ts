@@ -11,10 +11,13 @@ import GitRepoCloner from '../components/GitRepoCloner'
 export default class RepoClonerTest extends AbstractSpruceTest {
     private static instance: RepoCloner
     private static originalDir = process.cwd()
+    private static originalExecSync = GitRepoCloner.execSync
+    private static originalExistsSync = GitRepoCloner.existsSync
 
     protected static async beforeEach() {
         await super.beforeEach()
 
+        this.resetFakes()
         this.fakeExecSync()
         this.chdirToOriginalDir()
 
@@ -83,6 +86,20 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         assert.isLength(this.callsToExecSync, 0)
     }
 
+    @test()
+    protected static async throwsIfGitCloneFails() {
+        GitRepoCloner.execSync = (_command: string) => {
+            throw new Error(this.gitCloneFailedError)
+        }
+
+        const err = await assert.doesThrowAsync(() => this.run())
+
+        errorAssert.assertError(err, 'GIT_CLONE_FAILED', {
+            url: this.urls[0],
+            originalError: this.gitCloneFailedError,
+        })
+    }
+
     private static run(options?: Partial<RepoClonerOptions>) {
         return this.instance.run({
             urls: this.urls,
@@ -96,6 +113,11 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         GitRepoCloner.execSync = (command: string) => {
             this.callsToExecSync.push(command)
         }
+    }
+
+    private static resetFakes() {
+        GitRepoCloner.execSync = this.originalExecSync
+        GitRepoCloner.existsSync = this.originalExistsSync
     }
 
     private static chdirToOriginalDir() {
@@ -113,6 +135,8 @@ export default class RepoClonerTest extends AbstractSpruceTest {
     private static readonly validDirPath = 'src'
 
     private static readonly invalidDirPath = generateId()
+
+    private static readonly gitCloneFailedError = 'Failed to clone repo!'
 
     private static GitRepoCleaner() {
         return GitRepoCloner.Create()

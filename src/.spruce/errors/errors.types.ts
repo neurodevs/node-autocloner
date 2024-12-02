@@ -5,6 +5,35 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 
 
+
+export declare namespace SpruceErrors.NodeRepoCloner {
+
+	
+	export interface GitCloneFailed {
+		
+			
+			'url': string
+	}
+
+	export interface GitCloneFailedSchema extends SpruceSchema.Schema {
+		id: 'gitCloneFailed',
+		namespace: 'NodeRepoCloner',
+		name: 'GIT_CLONE_FAILED',
+		    fields: {
+		            /** . */
+		            'url': {
+		                type: 'text',
+		                isRequired: true,
+		                options: undefined
+		            },
+		    }
+	}
+
+	export type GitCloneFailedEntity = SchemaEntity<SpruceErrors.NodeRepoCloner.GitCloneFailedSchema>
+
+}
+
+
 export declare namespace SpruceErrors.NodeRepoCloner {
 
 	
