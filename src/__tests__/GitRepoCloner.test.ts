@@ -5,10 +5,8 @@ import AbstractSpruceTest, {
     errorAssert,
     generateId,
 } from '@sprucelabs/test-utils'
-import GitRepoCloner, {
-    RepoCloner,
-    RepoClonerOptions,
-} from '../components/GitRepoCloner'
+import { RepoCloner, RepoClonerOptions } from '../abstract.types'
+import GitRepoCloner from '../components/GitRepoCloner'
 
 export default class RepoClonerTest extends AbstractSpruceTest {
     private static instance: RepoCloner

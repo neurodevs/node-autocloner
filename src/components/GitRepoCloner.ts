@@ -2,6 +2,11 @@ import { execSync } from 'child_process'
 import fs from 'fs'
 import { chdir } from 'process'
 import { assertOptions } from '@sprucelabs/schema'
+import {
+    RepoCloner,
+    RepoClonerConstructor,
+    RepoClonerOptions,
+} from '../abstract.types'
 import SpruceError from '../errors/SpruceError'
 
 export default class GitRepoCloner implements RepoCloner {
@@ -49,15 +54,4 @@ export default class GitRepoCloner implements RepoCloner {
     private get execSync() {
         return GitRepoCloner.execSync
     }
-}
-
-export interface RepoCloner {
-    run(options: RepoClonerOptions): Promise<void>
-}
-
-export type RepoClonerConstructor = new () => RepoCloner
-
-export interface RepoClonerOptions {
-    urls: string[]
-    dirPath: string
 }
