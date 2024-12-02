@@ -1,3 +1,5 @@
+import { assertOptions } from '@sprucelabs/schema'
+
 export default class GitRepoCloner implements RepoCloner {
     public static Class?: RepoClonerConstructor
 
@@ -6,8 +8,19 @@ export default class GitRepoCloner implements RepoCloner {
     public static Create() {
         return new (this.Class ?? this)()
     }
+
+    public async run(options: RepoClonerOptions) {
+        assertOptions(options, ['urls', 'dirPath'])
+    }
 }
 
-export interface RepoCloner {}
+export interface RepoCloner {
+    run(options: RepoClonerOptions): Promise<void>
+}
 
-type RepoClonerConstructor = new () => RepoCloner
+export type RepoClonerConstructor = new () => RepoCloner
+
+export interface RepoClonerOptions {
+    urls: string[]
+    dirPath: string
+}

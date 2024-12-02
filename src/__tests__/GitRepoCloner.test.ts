@@ -1,4 +1,8 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
+import AbstractSpruceTest, {
+    test,
+    assert,
+    errorAssert,
+} from '@sprucelabs/test-utils'
 import GitRepoCloner from '../components/GitRepoCloner'
 
 export default class RepoClonerTest extends AbstractSpruceTest {
@@ -13,6 +17,16 @@ export default class RepoClonerTest extends AbstractSpruceTest {
     @test()
     protected static async canCreateRepoCloner() {
         assert.isTruthy(this.instance, 'Should create a new instance!')
+    }
+
+    @test()
+    protected static async runThrowsWithMissingRequiredOptions() {
+        // @ts-ignore
+        const err = await assert.doesThrowAsync(() => this.instance.run())
+
+        errorAssert.assertError(err, 'MISSING_PARAMETERS', {
+            parameters: ['urls', 'dirPath'],
+        })
     }
 
     private static GitRepoCleaner() {
