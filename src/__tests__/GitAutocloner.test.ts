@@ -5,8 +5,10 @@ import AbstractSpruceTest, {
     errorAssert,
     generateId,
 } from '@sprucelabs/test-utils'
-import { Autocloner, AutoclonerOptions } from '../abstract.types'
-import GitAutocloner from '../components/GitAutocloner'
+import GitAutocloner, {
+    Autocloner,
+    AutoclonerOptions,
+} from '../components/GitAutocloner'
 
 export default class AutoclonerTest extends AbstractSpruceTest {
     private static instance: Autocloner

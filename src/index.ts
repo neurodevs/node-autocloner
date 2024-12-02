@@ -6,5 +6,3 @@ export * from './components/NeurodevsAutocloner'
 
 export { default as FakeGitAutocloner } from './testDoubles/FakeGitAutocloner'
 export * from './testDoubles/FakeGitAutocloner'
-
-export * from './abstract.types'

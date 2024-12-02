@@ -1,6 +1,5 @@
 import { assertOptions } from '@sprucelabs/schema'
-import { Autocloner } from '../abstract.types'
-import GitAutocloner from './GitAutocloner'
+import GitAutocloner, { Autocloner } from './GitAutocloner'
 
 export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
     public static Class?: PresetUrlsAutoclonerConstructor

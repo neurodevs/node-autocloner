@@ -3,11 +3,6 @@ import { existsSync } from 'fs'
 import { chdir } from 'process'
 import { assertOptions } from '@sprucelabs/schema'
 import { buildLog } from '@sprucelabs/spruce-skill-utils'
-import {
-    Autocloner,
-    AutoclonerConstructor,
-    AutoclonerOptions,
-} from '../abstract.types'
 import SpruceError from '../errors/SpruceError'
 
 export default class GitAutocloner implements Autocloner {
@@ -107,4 +102,15 @@ export default class GitAutocloner implements Autocloner {
     }
 
     private readonly regex = /\/([a-zA-Z0-9_.-]+)\.git/
+}
+
+export interface Autocloner {
+    run(options: AutoclonerOptions): Promise<void>
+}
+
+export type AutoclonerConstructor = new () => Autocloner
+
+export interface AutoclonerOptions {
+    urls: string[]
+    dirPath: string
 }
