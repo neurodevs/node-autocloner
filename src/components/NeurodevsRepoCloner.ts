@@ -31,7 +31,20 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
         })
     }
 
-    private repoNames = ['node-lsl', 'node-xdf']
+    private repoNames = [
+        'node-autoupgrader',
+        'node-biometrics',
+        'node-csv',
+        'node-file-checker',
+        'node-file-loader',
+        'node-lsl',
+        'node-mangled-names',
+        'node-neuropype',
+        'node-server-plots',
+        'node-signal-processing',
+        'node-task-queue',
+        'node-xdf',
+    ]
 
     private generateUrl(repoName: string) {
         return `https://github.com/neurodevs/${repoName}.git`

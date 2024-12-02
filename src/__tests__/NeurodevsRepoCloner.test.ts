@@ -57,7 +57,20 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
         })
     }
 
-    private static packageNames = ['node-lsl', 'node-xdf']
+    private static packageNames = [
+        'node-autoupgrader',
+        'node-biometrics',
+        'node-csv',
+        'node-file-checker',
+        'node-file-loader',
+        'node-lsl',
+        'node-mangled-names',
+        'node-neuropype',
+        'node-server-plots',
+        'node-signal-processing',
+        'node-task-queue',
+        'node-xdf',
+    ]
 
     private static generateUrl(packageName: string) {
         return `https://github.com/neurodevs/${packageName}.git`
