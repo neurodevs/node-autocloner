@@ -24,7 +24,7 @@ export default class GitRepoCloner implements RepoCloner {
 
         this.throwIfDirPathDoesNotExist()
         this.changeDirectoryToDirPath()
-        this.cloneRepos()
+        this.cloneReposFromUrls()
     }
 
     private throwIfDirPathDoesNotExist() {
@@ -40,7 +40,7 @@ export default class GitRepoCloner implements RepoCloner {
         chdir(this.dirPath)
     }
 
-    private cloneRepos() {
+    private cloneReposFromUrls() {
         this.urls.forEach((url) => {
             this.execSync(`git clone ${url}`)
         })
