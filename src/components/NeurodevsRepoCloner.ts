@@ -1,3 +1,4 @@
+import { assertOptions } from '@sprucelabs/schema'
 import { RepoCloner } from '../abstract.types'
 import GitRepoCloner from './GitRepoCloner'
 
@@ -5,6 +6,7 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
     public static Class?: PresetRepoClonerConstructor
 
     private cloner: RepoCloner
+    private dirPath!: string
 
     protected constructor(cloner: RepoCloner) {
         this.cloner = cloner
@@ -15,20 +17,27 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
         return new (this.Class ?? this)(cloner)
     }
 
-    public async run() {
+    public async run(dirPath: string) {
+        assertOptions({ dirPath }, ['dirPath'])
+        this.dirPath = dirPath
+
+        await this.runGitCloner()
+    }
+
+    private async runGitCloner() {
         await this.cloner.run({
-            urls: this.packageUrls,
-            dirPath: '',
+            urls: this.repoUrls,
+            dirPath: this.dirPath,
         })
     }
 
-    private packageNames = ['node-lsl', 'node-xdf']
+    private repoNames = ['node-lsl', 'node-xdf']
 
-    private generateUrl(packageName: string) {
-        return `https://github.com/neurodevs/${packageName}.git`
+    private generateUrl(repoName: string) {
+        return `https://github.com/neurodevs/${repoName}.git`
     }
 
-    private packageUrls = this.packageNames.map(this.generateUrl)
+    private repoUrls = this.repoNames.map(this.generateUrl)
 
     private static GitRepoCloner() {
         return GitRepoCloner.Create()
@@ -36,7 +45,9 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
 }
 
 export interface PresetRepoCloner {
-    run(): Promise<void>
+    run(dirPath: string): Promise<void>
 }
 
-export type PresetRepoClonerConstructor = new () => PresetRepoCloner
+export type PresetRepoClonerConstructor = new (
+    cloner: RepoCloner
+) => PresetRepoCloner

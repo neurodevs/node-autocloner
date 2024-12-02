@@ -1,4 +1,9 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
+import AbstractSpruceTest, {
+    test,
+    assert,
+    errorAssert,
+    generateId,
+} from '@sprucelabs/test-utils'
 import GitRepoCloner from '../components/GitRepoCloner'
 import NeurodevsRepoCloner, {
     PresetRepoCloner,
@@ -22,6 +27,16 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
     }
 
     @test()
+    protected static async throwsWithMissingRequiredOptions() {
+        // @ts-ignore
+        const err = await assert.doesThrowAsync(() => this.instance.run())
+
+        errorAssert.assertError(err, 'MISSING_PARAMETERS', {
+            parameters: ['dirPath'],
+        })
+    }
+
+    @test()
     protected static async createsGitRepoCloner() {
         assert.isEqual(
             FakeGitRepoCloner.numCallsToConstructor,
@@ -32,13 +47,13 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
 
     @test()
     protected static async callsGitRepoClonerWithExpectedOptions() {
-        await this.instance.run()
+        await this.instance.run(this.dirPath)
 
         const options = FakeGitRepoCloner.callsToRun[0]
 
         assert.isEqualDeep(options, {
             urls: this.packageUrls,
-            dirPath: '',
+            dirPath: this.dirPath,
         })
     }
 
@@ -49,6 +64,8 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
     }
 
     private static packageUrls = this.packageNames.map(this.generateUrl)
+
+    private static readonly dirPath = generateId()
 
     private static setFakeGitRepoCloner() {
         GitRepoCloner.Class = FakeGitRepoCloner
