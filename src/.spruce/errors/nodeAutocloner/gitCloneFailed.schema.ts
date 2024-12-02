@@ -3,9 +3,9 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const gitCloneFailedSchema: SpruceErrors.NodeRepoCloner.GitCloneFailedSchema  = {
+const gitCloneFailedSchema: SpruceErrors.NodeAutocloner.GitCloneFailedSchema  = {
 	id: 'gitCloneFailed',
-	namespace: 'NodeRepoCloner',
+	namespace: 'NodeAutocloner',
 	name: 'GIT_CLONE_FAILED',
 	    fields: {
 	            /** . */

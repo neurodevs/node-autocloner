@@ -3,9 +3,9 @@ import { SpruceErrors } from '../errors.types'
 
 
 
-const dirPathDoesNotExistSchema: SpruceErrors.NodeRepoCloner.DirPathDoesNotExistSchema  = {
+const dirPathDoesNotExistSchema: SpruceErrors.NodeAutocloner.DirPathDoesNotExistSchema  = {
 	id: 'dirPathDoesNotExist',
-	namespace: 'NodeRepoCloner',
+	namespace: 'NodeAutocloner',
 	name: 'DIR_PATH_DOES_NOT_EXIST',
 	    fields: {
 	            /** . */

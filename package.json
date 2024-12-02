@@ -1,8 +1,8 @@
 {
-  "name": "@neurodevs/node-repo-cloner",
+  "name": "@neurodevs/node-autocloner",
   "version": "0.0.1",
   "main": "build/index.js",
-  "repository": "https://github.com/neurodevs/node-repo-cloner.git",
+  "repository": "https://github.com/neurodevs/node-autocloner.git",
   "scripts": {
     "build.ci": "yarn run build.tsc && yarn run build.resolve-paths && yarn run lint",
     "build.dev": "yarn run build.tsc --sourceMap ; yarn run resolve-paths.lint",
@@ -43,7 +43,7 @@
   },
   "description": "Clone a list of git repos",
   "skill": {
-    "namespace": "node-repo-cloner"
+    "namespace": "node-autocloner"
   },
   "jest": {
     "testRunner": "jest-circus/runner",

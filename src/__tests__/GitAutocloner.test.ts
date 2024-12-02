@@ -5,14 +5,14 @@ import AbstractSpruceTest, {
     errorAssert,
     generateId,
 } from '@sprucelabs/test-utils'
-import { RepoCloner, RepoClonerOptions } from '../abstract.types'
-import GitRepoCloner from '../components/GitRepoCloner'
+import { Autocloner, AutoclonerOptions } from '../abstract.types'
+import GitAutocloner from '../components/GitAutocloner'
 
-export default class RepoClonerTest extends AbstractSpruceTest {
-    private static instance: RepoCloner
+export default class AutoclonerTest extends AbstractSpruceTest {
+    private static instance: Autocloner
     private static originalDir = process.cwd()
-    private static originalExecSync = GitRepoCloner.execSync
-    private static originalExistsSync = GitRepoCloner.existsSync
+    private static originalExecSync = GitAutocloner.execSync
+    private static originalExistsSync = GitAutocloner.existsSync
 
     protected static async beforeEach() {
         await super.beforeEach()
@@ -21,11 +21,11 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         this.fakeExecSync()
         this.chdirToOriginalDir()
 
-        this.instance = this.GitRepoCleaner()
+        this.instance = this.GitAutocloner()
     }
 
     @test()
-    protected static async canCreateRepoCloner() {
+    protected static async canCreateAutocloner() {
         assert.isTruthy(this.instance, 'Should create a new instance!')
     }
 
@@ -79,7 +79,7 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         this.callsToExecSync = []
         this.chdirToOriginalDir()
 
-        GitRepoCloner.existsSync = () => true
+        GitAutocloner.existsSync = () => true
 
         await this.run()
 
@@ -88,7 +88,7 @@ export default class RepoClonerTest extends AbstractSpruceTest {
 
     @test()
     protected static async throwsIfGitCloneFails() {
-        GitRepoCloner.execSync = (_command: string) => {
+        GitAutocloner.execSync = (_command: string) => {
             throw new Error(this.gitCloneFailedError)
         }
 
@@ -106,7 +106,7 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         await this.run({ urls: [repoName] })
     }
 
-    private static run(options?: Partial<RepoClonerOptions>) {
+    private static run(options?: Partial<AutoclonerOptions>) {
         return this.instance.run({
             urls: this.urls,
             dirPath: this.validDirPath,
@@ -116,14 +116,14 @@ export default class RepoClonerTest extends AbstractSpruceTest {
 
     private static fakeExecSync() {
         // @ts-ignore
-        GitRepoCloner.execSync = (command: string) => {
+        GitAutocloner.execSync = (command: string) => {
             this.callsToExecSync.push(command)
         }
     }
 
     private static resetFakes() {
-        GitRepoCloner.execSync = this.originalExecSync
-        GitRepoCloner.existsSync = this.originalExistsSync
+        GitAutocloner.execSync = this.originalExecSync
+        GitAutocloner.existsSync = this.originalExistsSync
     }
 
     private static chdirToOriginalDir() {
@@ -144,7 +144,7 @@ export default class RepoClonerTest extends AbstractSpruceTest {
 
     private static readonly gitCloneFailedError = 'Failed to clone repo!'
 
-    private static GitRepoCleaner() {
-        return GitRepoCloner.Create()
+    private static GitAutocloner() {
+        return GitAutocloner.Create()
     }
 }

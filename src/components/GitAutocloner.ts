@@ -4,14 +4,14 @@ import { chdir } from 'process'
 import { assertOptions } from '@sprucelabs/schema'
 import { buildLog } from '@sprucelabs/spruce-skill-utils'
 import {
-    RepoCloner,
-    RepoClonerConstructor,
-    RepoClonerOptions,
+    Autocloner,
+    AutoclonerConstructor,
+    AutoclonerOptions,
 } from '../abstract.types'
 import SpruceError from '../errors/SpruceError'
 
-export default class GitRepoCloner implements RepoCloner {
-    public static Class?: RepoClonerConstructor
+export default class GitAutocloner implements Autocloner {
+    public static Class?: AutoclonerConstructor
     public static execSync = execSync
     public static existsSync = existsSync
 
@@ -19,7 +19,7 @@ export default class GitRepoCloner implements RepoCloner {
     private dirPath!: string
     private currentUrl!: string
     private currentError!: any
-    private log = buildLog('GitRepoCloner')
+    private log = buildLog('GitAutocloner')
 
     protected constructor() {}
 
@@ -27,7 +27,7 @@ export default class GitRepoCloner implements RepoCloner {
         return new (this.Class ?? this)()
     }
 
-    public async run(options: RepoClonerOptions) {
+    public async run(options: AutoclonerOptions) {
         const { urls, dirPath } = assertOptions(options, ['urls', 'dirPath'])
         this.urls = urls
         this.dirPath = dirPath
@@ -99,11 +99,11 @@ export default class GitRepoCloner implements RepoCloner {
     }
 
     private get existsSync() {
-        return GitRepoCloner.existsSync
+        return GitAutocloner.existsSync
     }
 
     private get execSync() {
-        return GitRepoCloner.execSync
+        return GitAutocloner.execSync
     }
 
     private readonly regex = /\/([a-zA-Z0-9_.-]+)\.git/

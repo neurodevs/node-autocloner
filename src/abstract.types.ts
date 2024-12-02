@@ -1,10 +1,10 @@
-export interface RepoCloner {
-    run(options: RepoClonerOptions): Promise<void>
+export interface Autocloner {
+    run(options: AutoclonerOptions): Promise<void>
 }
 
-export type RepoClonerConstructor = new () => RepoCloner
+export type AutoclonerConstructor = new () => Autocloner
 
-export interface RepoClonerOptions {
+export interface AutoclonerOptions {
     urls: string[]
     dirPath: string
 }

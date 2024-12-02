@@ -4,25 +4,25 @@ import AbstractSpruceTest, {
     errorAssert,
     generateId,
 } from '@sprucelabs/test-utils'
-import GitRepoCloner from '../components/GitRepoCloner'
-import NeurodevsRepoCloner, {
-    PresetRepoCloner,
-} from '../components/NeurodevsRepoCloner'
-import FakeGitRepoCloner from '../testDoubles/FakeGitRepoCloner'
+import GitAutocloner from '../components/GitAutocloner'
+import NeurodevsAutocloner, {
+    PresetUrlsAutocloner,
+} from '../components/NeurodevsAutocloner'
+import FakeGitAutocloner from '../testDoubles/FakeGitAutocloner'
 
-export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
-    private static instance: PresetRepoCloner
+export default class NeurodevsAutoclonerTest extends AbstractSpruceTest {
+    private static instance: PresetUrlsAutocloner
 
     protected static async beforeEach() {
         await super.beforeEach()
 
-        this.setFakeGitRepoCloner()
+        this.setFakeGitAutocloner()
 
-        this.instance = this.NeurodevsRepoCloner()
+        this.instance = this.NeurodevsAutocloner()
     }
 
     @test()
-    protected static async canCreateNeurodevsRepoCloner() {
+    protected static async canCreateNeurodevsAutocloner() {
         assert.isTruthy(this.instance, 'Should create a new instance!')
     }
 
@@ -37,19 +37,19 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
     }
 
     @test()
-    protected static async createsGitRepoCloner() {
+    protected static async createsGitAutocloner() {
         assert.isEqual(
-            FakeGitRepoCloner.numCallsToConstructor,
+            FakeGitAutocloner.numCallsToConstructor,
             1,
-            'Should create a new instance of GitRepoCloner!'
+            'Should create a new instance of GitAutocloner!'
         )
     }
 
     @test()
-    protected static async callsGitRepoClonerWithExpectedOptions() {
+    protected static async callsGitAutoclonerWithExpectedOptions() {
         await this.instance.run(this.dirPath)
 
-        const options = FakeGitRepoCloner.callsToRun[0]
+        const options = FakeGitAutocloner.callsToRun[0]
 
         assert.isEqualDeep(options, {
             urls: this.repoUrls,
@@ -91,12 +91,12 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
 
     private static readonly dirPath = generateId()
 
-    private static setFakeGitRepoCloner() {
-        GitRepoCloner.Class = FakeGitRepoCloner
-        FakeGitRepoCloner.resetTestDouble()
+    private static setFakeGitAutocloner() {
+        GitAutocloner.Class = FakeGitAutocloner
+        FakeGitAutocloner.resetTestDouble()
     }
 
-    private static NeurodevsRepoCloner() {
-        return NeurodevsRepoCloner.Create()
+    private static NeurodevsAutocloner() {
+        return NeurodevsAutocloner.Create()
     }
 }

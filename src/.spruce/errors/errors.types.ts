@@ -6,7 +6,7 @@ import * as SpruceSchema from '@sprucelabs/schema'
 
 
 
-export declare namespace SpruceErrors.NodeRepoCloner {
+export declare namespace SpruceErrors.NodeAutocloner {
 
 	
 	export interface GitCloneFailed {
@@ -17,7 +17,7 @@ export declare namespace SpruceErrors.NodeRepoCloner {
 
 	export interface GitCloneFailedSchema extends SpruceSchema.Schema {
 		id: 'gitCloneFailed',
-		namespace: 'NodeRepoCloner',
+		namespace: 'NodeAutocloner',
 		name: 'GIT_CLONE_FAILED',
 		    fields: {
 		            /** . */
@@ -29,12 +29,12 @@ export declare namespace SpruceErrors.NodeRepoCloner {
 		    }
 	}
 
-	export type GitCloneFailedEntity = SchemaEntity<SpruceErrors.NodeRepoCloner.GitCloneFailedSchema>
+	export type GitCloneFailedEntity = SchemaEntity<SpruceErrors.NodeAutocloner.GitCloneFailedSchema>
 
 }
 
 
-export declare namespace SpruceErrors.NodeRepoCloner {
+export declare namespace SpruceErrors.NodeAutocloner {
 
 	
 	export interface DirPathDoesNotExist {
@@ -45,7 +45,7 @@ export declare namespace SpruceErrors.NodeRepoCloner {
 
 	export interface DirPathDoesNotExistSchema extends SpruceSchema.Schema {
 		id: 'dirPathDoesNotExist',
-		namespace: 'NodeRepoCloner',
+		namespace: 'NodeAutocloner',
 		name: 'DIR_PATH_DOES_NOT_EXIST',
 		    fields: {
 		            /** . */
@@ -57,7 +57,7 @@ export declare namespace SpruceErrors.NodeRepoCloner {
 		    }
 	}
 
-	export type DirPathDoesNotExistEntity = SchemaEntity<SpruceErrors.NodeRepoCloner.DirPathDoesNotExistSchema>
+	export type DirPathDoesNotExistEntity = SchemaEntity<SpruceErrors.NodeAutocloner.DirPathDoesNotExistSchema>
 
 }
 

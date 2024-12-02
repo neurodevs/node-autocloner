@@ -1,20 +1,20 @@
 import { assertOptions } from '@sprucelabs/schema'
-import { RepoCloner } from '../abstract.types'
-import GitRepoCloner from './GitRepoCloner'
+import { Autocloner } from '../abstract.types'
+import GitAutocloner from './GitAutocloner'
 
-export default class NeurodevsRepoCloner implements PresetRepoCloner {
-    public static Class?: PresetRepoClonerConstructor
+export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
+    public static Class?: PresetUrlsAutoclonerConstructor
 
-    private gitCloner: RepoCloner
+    private autocloner: Autocloner
     private dirPath!: string
 
-    protected constructor(cloner: RepoCloner) {
-        this.gitCloner = cloner
+    protected constructor(autocloner: Autocloner) {
+        this.autocloner = autocloner
     }
 
     public static Create() {
-        const cloner = this.GitRepoCloner()
-        return new (this.Class ?? this)(cloner)
+        const autocloner = this.GitAutocloner()
+        return new (this.Class ?? this)(autocloner)
     }
 
     public async run(dirPath: string) {
@@ -25,7 +25,7 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
     }
 
     private async runGitCloner() {
-        await this.gitCloner.run({
+        await this.autocloner.run({
             urls: this.repoUrls,
             dirPath: this.dirPath,
         })
@@ -63,15 +63,15 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
 
     private repoUrls = this.repoNames.map(this.generateUrl)
 
-    private static GitRepoCloner() {
-        return GitRepoCloner.Create()
+    private static GitAutocloner() {
+        return GitAutocloner.Create()
     }
 }
 
-export interface PresetRepoCloner {
+export interface PresetUrlsAutocloner {
     run(dirPath: string): Promise<void>
 }
 
-export type PresetRepoClonerConstructor = new (
-    cloner: RepoCloner
-) => PresetRepoCloner
+export type PresetUrlsAutoclonerConstructor = new (
+    cloner: Autocloner
+) => PresetUrlsAutocloner
