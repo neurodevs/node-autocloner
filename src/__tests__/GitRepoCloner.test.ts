@@ -69,6 +69,20 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         })
     }
 
+    @test()
+    protected static async doesNotCallGitCloneIfUrlExists() {
+        await this.run()
+
+        this.callsToExecSync = []
+        this.chdirToOriginalDir()
+
+        GitRepoCloner.existsSync = () => true
+
+        await this.run()
+
+        assert.isLength(this.callsToExecSync, 0)
+    }
+
     private static run(options?: Partial<RepoClonerOptions>) {
         return this.instance.run({
             urls: this.urls,
@@ -88,9 +102,13 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         chdir(this.originalDir)
     }
 
+    private static generateUrl() {
+        return `https://github.com/${generateId()}.git`
+    }
+
     private static callsToExecSync: string[] = []
 
-    private static readonly urls = [generateId(), generateId()]
+    private static readonly urls = [this.generateUrl(), this.generateUrl()]
 
     private static readonly validDirPath = 'src'
 
