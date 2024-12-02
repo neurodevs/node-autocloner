@@ -1,7 +1,11 @@
+import fs from 'fs'
 import { assertOptions } from '@sprucelabs/schema'
+import SpruceError from '../errors/SpruceError'
 
 export default class GitRepoCloner implements RepoCloner {
     public static Class?: RepoClonerConstructor
+
+    private dirPath!: string
 
     protected constructor() {}
 
@@ -10,7 +14,19 @@ export default class GitRepoCloner implements RepoCloner {
     }
 
     public async run(options: RepoClonerOptions) {
-        assertOptions(options, ['urls', 'dirPath'])
+        const { dirPath } = assertOptions(options, ['urls', 'dirPath'])
+        this.dirPath = dirPath
+
+        this.throwIfDirPathDoesNotExist()
+    }
+
+    private throwIfDirPathDoesNotExist() {
+        if (!fs.existsSync(this.dirPath)) {
+            throw new SpruceError({
+                code: 'DIR_PATH_DOES_NOT_EXIST',
+                dirPath: this.dirPath,
+            })
+        }
     }
 }
 
