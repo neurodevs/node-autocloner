@@ -1,16 +1,24 @@
+import { chdir } from 'process'
 import AbstractSpruceTest, {
     test,
     assert,
     errorAssert,
     generateId,
 } from '@sprucelabs/test-utils'
-import GitRepoCloner, { RepoCloner } from '../components/GitRepoCloner'
+import GitRepoCloner, {
+    RepoCloner,
+    RepoClonerOptions,
+} from '../components/GitRepoCloner'
 
 export default class RepoClonerTest extends AbstractSpruceTest {
     private static instance: RepoCloner
+    private static originalDir = process.cwd()
 
     protected static async beforeEach() {
         await super.beforeEach()
+
+        this.fakeExecSync()
+        this.chdirToOriginalDir()
 
         this.instance = this.GitRepoCleaner()
     }
@@ -21,7 +29,7 @@ export default class RepoClonerTest extends AbstractSpruceTest {
     }
 
     @test()
-    protected static async runThrowsWithMissingRequiredOptions() {
+    protected static async throwsWithMissingRequiredOptions() {
         // @ts-ignore
         const err = await assert.doesThrowAsync(() => this.instance.run())
 
@@ -31,37 +39,64 @@ export default class RepoClonerTest extends AbstractSpruceTest {
     }
 
     @test()
-    protected static async runThrowsIfDirPathDoesNotExist() {
+    protected static async throwsIfDirPathDoesNotExist() {
         const err = await assert.doesThrowAsync(() =>
-            this.instance.run({
-                urls: [],
-                dirPath: this.dirPath,
-            })
+            this.run({ dirPath: this.invalidDirPath })
         )
+
         errorAssert.assertError(err, 'DIR_PATH_DOES_NOT_EXIST', {
-            dirPath: this.dirPath,
+            dirPath: this.invalidDirPath,
         })
     }
 
     @test()
     protected static async changesCurrentDirectoryToDirPath() {
-        const dirPath = 'src'
-
-        await this.instance.run({
-            urls: [],
-            dirPath,
-        })
+        await this.run()
 
         const actual = process.cwd().split('/').pop()
 
         assert.isEqual(
             actual,
-            dirPath,
+            this.validDirPath,
             'Should change current directory to the dirPath!'
         )
     }
 
-    private static readonly dirPath = generateId()
+    @test()
+    protected static async callsGitCloneForEachUrl() {
+        await this.run()
+
+        this.urls.forEach((url) => {
+            assert.doesInclude(this.callsToExecSync, `git clone ${url}`)
+        })
+    }
+
+    private static run(options?: Partial<RepoClonerOptions>) {
+        return this.instance.run({
+            urls: this.urls,
+            dirPath: this.validDirPath,
+            ...options,
+        })
+    }
+
+    private static fakeExecSync() {
+        // @ts-ignore
+        GitRepoCloner.execSync = (command: string) => {
+            this.callsToExecSync.push(command)
+        }
+    }
+
+    private static chdirToOriginalDir() {
+        chdir(this.originalDir)
+    }
+
+    private static callsToExecSync: string[] = []
+
+    private static readonly urls = [generateId(), generateId()]
+
+    private static readonly validDirPath = 'src'
+
+    private static readonly invalidDirPath = generateId()
 
     private static GitRepoCleaner() {
         return GitRepoCloner.Create()

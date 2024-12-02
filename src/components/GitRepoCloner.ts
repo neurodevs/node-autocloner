@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 import fs from 'fs'
 import { chdir } from 'process'
 import { assertOptions } from '@sprucelabs/schema'
@@ -5,7 +6,9 @@ import SpruceError from '../errors/SpruceError'
 
 export default class GitRepoCloner implements RepoCloner {
     public static Class?: RepoClonerConstructor
+    public static execSync = execSync
 
+    private urls!: string[]
     private dirPath!: string
 
     protected constructor() {}
@@ -15,12 +18,13 @@ export default class GitRepoCloner implements RepoCloner {
     }
 
     public async run(options: RepoClonerOptions) {
-        const { dirPath } = assertOptions(options, ['urls', 'dirPath'])
+        const { urls, dirPath } = assertOptions(options, ['urls', 'dirPath'])
+        this.urls = urls
         this.dirPath = dirPath
 
         this.throwIfDirPathDoesNotExist()
-
-        chdir(this.dirPath)
+        this.changeDirectoryToDirPath()
+        this.cloneRepos()
     }
 
     private throwIfDirPathDoesNotExist() {
@@ -30,6 +34,20 @@ export default class GitRepoCloner implements RepoCloner {
                 dirPath: this.dirPath,
             })
         }
+    }
+
+    private changeDirectoryToDirPath() {
+        chdir(this.dirPath)
+    }
+
+    private cloneRepos() {
+        this.urls.forEach((url) => {
+            this.execSync(`git clone ${url}`)
+        })
+    }
+
+    private get execSync() {
+        return GitRepoCloner.execSync
     }
 }
 
