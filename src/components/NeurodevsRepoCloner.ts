@@ -5,11 +5,11 @@ import GitRepoCloner from './GitRepoCloner'
 export default class NeurodevsRepoCloner implements PresetRepoCloner {
     public static Class?: PresetRepoClonerConstructor
 
-    private cloner: RepoCloner
+    private gitCloner: RepoCloner
     private dirPath!: string
 
     protected constructor(cloner: RepoCloner) {
-        this.cloner = cloner
+        this.gitCloner = cloner
     }
 
     public static Create() {
@@ -25,7 +25,7 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
     }
 
     private async runGitCloner() {
-        await this.cloner.run({
+        await this.gitCloner.run({
             urls: this.repoUrls,
             dirPath: this.dirPath,
         })
