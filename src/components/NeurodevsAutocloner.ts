@@ -35,6 +35,7 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
         'fili.js',
         'liblsl',
         'libxdf',
+        'node-autocloner',
         'node-autoupgrader',
         'node-biometrics',
         'node-biosensors',
