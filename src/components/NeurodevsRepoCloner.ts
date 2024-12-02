@@ -32,18 +32,29 @@ export default class NeurodevsRepoCloner implements PresetRepoCloner {
     }
 
     private repoNames = [
+        'fili.js',
+        'liblsl',
+        'libxdf',
         'node-autoupgrader',
         'node-biometrics',
+        'node-biosensors',
+        'node-ble',
         'node-csv',
+        'node-event-markers',
+        'node-experiment-builder',
         'node-file-checker',
         'node-file-loader',
+        'node-html-loader',
+        'node-knowledge-graphs',
         'node-lsl',
         'node-mangled-names',
         'node-neuropype',
+        'node-ppg',
         'node-server-plots',
         'node-signal-processing',
         'node-task-queue',
         'node-xdf',
+        'react-connectivity-graphs',
     ]
 
     private generateUrl(repoName: string) {

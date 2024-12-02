@@ -52,31 +52,42 @@ export default class NeurodevsRepoClonerTest extends AbstractSpruceTest {
         const options = FakeGitRepoCloner.callsToRun[0]
 
         assert.isEqualDeep(options, {
-            urls: this.packageUrls,
+            urls: this.repoUrls,
             dirPath: this.dirPath,
         })
     }
 
-    private static packageNames = [
+    private static repoNames = [
+        'fili.js',
+        'liblsl',
+        'libxdf',
         'node-autoupgrader',
         'node-biometrics',
+        'node-biosensors',
+        'node-ble',
         'node-csv',
+        'node-event-markers',
+        'node-experiment-builder',
         'node-file-checker',
         'node-file-loader',
+        'node-html-loader',
+        'node-knowledge-graphs',
         'node-lsl',
         'node-mangled-names',
         'node-neuropype',
+        'node-ppg',
         'node-server-plots',
         'node-signal-processing',
         'node-task-queue',
         'node-xdf',
+        'react-connectivity-graphs',
     ]
 
-    private static generateUrl(packageName: string) {
-        return `https://github.com/neurodevs/${packageName}.git`
+    private static generateUrl(repoName: string) {
+        return `https://github.com/neurodevs/${repoName}.git`
     }
 
-    private static packageUrls = this.packageNames.map(this.generateUrl)
+    private static repoUrls = this.repoNames.map(this.generateUrl)
 
     private static readonly dirPath = generateId()
 
