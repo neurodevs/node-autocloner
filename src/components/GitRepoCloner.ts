@@ -87,5 +87,5 @@ export default class GitRepoCloner implements RepoCloner {
         return `Repo already exists, skipping: ${this.currentRepoName}!`
     }
 
-    private readonly regex = /\/([a-zA-Z0-9_-]+)\.git/
+    private readonly regex = /\/([a-zA-Z0-9_.-]+)\.git/
 }

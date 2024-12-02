@@ -100,6 +100,12 @@ export default class RepoClonerTest extends AbstractSpruceTest {
         })
     }
 
+    @test()
+    protected static async worksWithPeriodInRepoName() {
+        const repoName = `/${generateId()}.${generateId()}.git`
+        await this.run({ urls: [repoName] })
+    }
+
     private static run(options?: Partial<RepoClonerOptions>) {
         return this.instance.run({
             urls: this.urls,
