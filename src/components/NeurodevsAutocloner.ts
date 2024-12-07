@@ -52,7 +52,6 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
         'node-ppg',
         'node-server-plots',
         'node-signal-processing',
-        'node-stream-recorder',
         'node-task-queue',
         'node-xdf',
         'react-connectivity-graphs',
