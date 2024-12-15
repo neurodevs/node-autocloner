@@ -59,6 +59,7 @@ export default class NeurodevsAutoclonerTest extends AbstractSpruceTest {
 
     private static repoNames = [
         'fili.js',
+        'labrecorder',
         'liblsl',
         'libxdf',
         'node-autocloner',

@@ -32,6 +32,7 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
 
     private repoNames = [
         'fili.js',
+        'labrecorder',
         'liblsl',
         'libxdf',
         'node-autocloner',
