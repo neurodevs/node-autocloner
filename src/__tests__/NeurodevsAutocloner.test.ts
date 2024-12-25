@@ -63,6 +63,7 @@ export default class NeurodevsAutoclonerTest extends AbstractSpruceTest {
         'liblsl',
         'libxdf',
         'node-autocloner',
+        'node-autopackage',
         'node-autoupgrader',
         'node-biometrics',
         'node-biosensors',
