@@ -42,7 +42,6 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
         'node-biosensors',
         'node-ble',
         'node-csv',
-        'node-event-markers',
         'node-experiment-builder',
         'node-file-checker',
         'node-file-loader',
