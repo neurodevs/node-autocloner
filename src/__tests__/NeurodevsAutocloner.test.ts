@@ -69,6 +69,7 @@ export default class NeurodevsAutoclonerTest extends AbstractSpruceTest {
         'node-biosensors',
         'node-ble',
         'node-csv',
+        'node-eeg',
         'node-experiment-builder',
         'node-file-checker',
         'node-file-loader',
