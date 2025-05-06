@@ -57,7 +57,6 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
         'node-task-queue',
         'node-test-counter',
         'node-xdf',
-        'react-connectivity-graphs',
     ]
 
     private generateUrl(repoName: string) {

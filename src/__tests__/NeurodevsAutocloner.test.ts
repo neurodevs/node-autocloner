@@ -84,7 +84,6 @@ export default class NeurodevsAutoclonerTest extends AbstractSpruceTest {
         'node-task-queue',
         'node-test-counter',
         'node-xdf',
-        'react-connectivity-graphs',
     ]
 
     private static generateUrl(repoName: string) {
