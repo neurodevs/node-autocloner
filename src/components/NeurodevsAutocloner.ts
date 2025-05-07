@@ -57,6 +57,7 @@ export default class NeurodevsAutocloner implements PresetUrlsAutocloner {
         'node-task-queue',
         'node-test-counter',
         'node-xdf',
+        'personomic'
     ]
 
     private generateUrl(repoName: string) {
